@@ -87,12 +87,13 @@ export default {
     },
     doDelete: function() {
       // cleaRect:四角形の形にクリアにするメソッド
-      // x,yは座標原点、w,hは四角形の幅
+      // cleaRect(x, y, w, h) x,yは座標原点、w,hは四角形の幅
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
   }
 };
 </script>
+
 
 <style scoped>
 #draw-area {
