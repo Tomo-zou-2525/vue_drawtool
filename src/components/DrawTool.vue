@@ -5,6 +5,7 @@
       <!-- canvas要素に範囲とv-onディレクティブの設定 -->
       <canvas
         id="draw-area"
+        v-bind:class="{ eraser: canvasMode === 'eraser' }"
         width="500px"
         height="500px"
         @mousedown="paintS"
@@ -14,7 +15,7 @@
       ></canvas>
     </div>
     <div id="tool-alea">
-      <button></button>
+      <button id="all-delete" @click="doDelete">Delete</button>
     </div>
   </div>
 </template>
@@ -83,14 +84,19 @@ export default {
     paintE: function() {
       this.context.closePath();
       this.isDrag = false;
+    },
+    doDelete: function() {
+      // cleaRect:四角形の形にクリアにするメソッド
+      // x,yは座標原点、w,hは四角形の幅
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
   }
 };
 </script>
 
 <style scoped>
-#drew-area {
-  border: 1px, solid, #000;
+#draw-area {
+  border: 1px solid #000;
 }
 </style>>
 
