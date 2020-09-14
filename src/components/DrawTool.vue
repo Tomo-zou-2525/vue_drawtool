@@ -34,10 +34,11 @@ export default {
   name: "DrawTool",
   // 使用するデータの定義
   data() {
-    // なぜリターン？→data()が関数となっているので、戻り値を返す必要があるため
+    // 空のcanvas,contextを用意
     return {
       canvas: null,
       context: null,
+      // ドラッグ状態かを判定するフラグ
       isDrag: false,
       // 現在の状態を表すパラメータ・canvasModeを追加
       canvasMode: "penBlack"
@@ -138,6 +139,7 @@ export default {
       this.context.lineWidth = 30;
       this.context.strokeStyle = "#fff";
     },
+    // download属性を使用してダウンロードファイルを生成
     download: function() {
       let link = document.createElement("a");
       link.href = this.canvas.toDataURL("image/png");
