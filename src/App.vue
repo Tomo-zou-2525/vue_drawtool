@@ -6,13 +6,11 @@
 </template>
 
 <script>
-// import HelloWorld from "./components/HelloWorld.vue";
 import DrawTool from "./components/DrawTool.vue";
 
 export default {
   name: "App",
   components: {
-    // HelloWorld,
     DrawTool
   }
 };
