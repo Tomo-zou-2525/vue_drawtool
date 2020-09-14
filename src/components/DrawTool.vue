@@ -137,6 +137,12 @@ export default {
       this.context.lineJoin = "square";
       this.context.lineWidth = 30;
       this.context.strokeStyle = "#fff";
+    },
+    download: function() {
+      let link = document.createElement("a");
+      link.href = this.canvas.toDataURL("image/png");
+      link.download = "canvas-" + new Date().getTime() + ".png";
+      link.click();
     }
   }
 };
