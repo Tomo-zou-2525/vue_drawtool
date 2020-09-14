@@ -2,10 +2,11 @@
   <div>
     <h1>DrawTool</h1>
     <div id="canvas-area">
-      <!-- canvas要素に範囲とv-onディレクティブの設定 -->
+      <!-- ９行目＝canvasタグ内にeraserクラスをバインドする処理 -->
+      <!-- １２行目〜＝canvas要素に範囲とv-onディレクティブの設定 -->
       <canvas
         id="draw-area"
-        v-bind:class="{ eraser: canvasMode === 'eraser' }"
+        v-bind:class="{ doEraser: canvasMode === 'doEraser' }"
         width="500px"
         height="500px"
         @mousedown="paintS"
@@ -16,6 +17,8 @@
     </div>
     <div id="tool-alea">
       <button id="all-delete" @click="doDelete">Delete</button>
+      <button id="select-pen" @click="doPen">Pen</button>
+      <button id="select-eraser" @click="doEraser">Eraser</button>
     </div>
   </div>
 </template>
@@ -31,7 +34,9 @@ export default {
     return {
       canvas: null,
       context: null,
-      isDrag: false
+      isDrag: false,
+      // 現在の状態を表すパラメータ・canvasModeを追加
+      canvasMode: "doPen"
     };
   },
   // マウント要素を指定
@@ -89,6 +94,25 @@ export default {
       // cleaRect:四角形の形にクリアにするメソッド
       // cleaRect(x, y, w, h) x,yは座標原点、w,hは四角形の幅
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+    doPen: function() {
+      // カーソル：描画モード
+      this.canvasMode = "dopen";
+
+      // 描画スタイルの設定
+      this.context.lineCap = "round";
+      this.context.lineJoin = "round";
+      this.context.lineWidth = 5;
+      this.context.strokeStyle = "#000";
+    },
+    doEraser: function() {
+      this.canvasMode = "doEraser";
+
+      // 描画スタイルの設定
+      this.context.lineCap = "square";
+      this.context.lineJoin = "square";
+      this.context.lineWidth = 30;
+      this.context.strokeStyle = "#fff";
     }
   }
 };
@@ -96,8 +120,16 @@ export default {
 
 
 <style scoped>
+/* canvas要素内の枠組み */
 #draw-area {
   border: 1px solid #000;
+}
+/* 消しゴム要素の画像指定 */
+.doEraser {
+  cursor: url(../assets/image/eraser.png) 50 50, auto;
+}
+button {
+  margin-left: 5px;
 }
 </style>>
 
