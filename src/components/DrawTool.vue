@@ -2,23 +2,27 @@
   <div>
     <h1>DrawTool</h1>
     <div id="canvas-area">
-      <!-- ９行目＝canvasタグ内にeraserクラスをバインドする処理 -->
-      <!-- １２行目〜＝canvas要素に範囲とv-onディレクティブの設定 -->
+      <!-- 9行目＝canvasタグ内にeraserクラスをバインドする処理 -->
+      <!-- 10行目〜＝canvas要素に範囲の指定とイベント毎v-onディレクティブの設定 -->
       <canvas
         id="draw-area"
         v-bind:class="{ doEraser: canvasMode === 'doEraser' }"
-        width="500px"
-        height="500px"
         @mousedown="paintS"
-        @mouseup="paintE"
         @mouseout="paintE"
+        @mouseup="paintE"
         @mousemove="draw"
+        height="500px"
+        width="500px"
       ></canvas>
     </div>
+    <!-- 各種ツールをボタンタグで配置 -->
     <div id="tool-alea">
-      <button id="all-delete" @click="doDelete">Delete</button>
-      <button id="select-pen" @click="doPen">Pen</button>
+      <button id="select-pen_black" @click="penBlack">Pen(Black)</button>
+      <button id="select-pen_blue" @click="penBlue">Pen(Blue)</button>
+      <button id="select-pen_red" @click="penRed">Pen(Red)</button>
       <button id="select-eraser" @click="doEraser">Eraser</button>
+      <button id="all-delete" @click="doDelete">Delete</button>
+      <button id="download" @click="download">Download</button>
     </div>
   </div>
 </template>
@@ -36,7 +40,7 @@ export default {
       context: null,
       isDrag: false,
       // 現在の状態を表すパラメータ・canvasModeを追加
-      canvasMode: "doPen"
+      canvasMode: "penBlack"
     };
   },
   // マウント要素を指定
@@ -95,15 +99,35 @@ export default {
       // cleaRect(x, y, w, h) x,yは座標原点、w,hは四角形の幅
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     },
-    doPen: function() {
-      // カーソル：描画モード
-      this.canvasMode = "dopen";
+    penBlack: function() {
+      // カーソル：描画モード(黒色のペン)
+      this.canvasMode = "penBlack";
 
       // 描画スタイルの設定
       this.context.lineCap = "round";
       this.context.lineJoin = "round";
       this.context.lineWidth = 5;
       this.context.strokeStyle = "#000";
+    },
+    penBlue: function() {
+      // カーソル：描画モード(青色のペン)
+      this.canvasMode = "penBlack";
+
+      // 描画スタイルの設定
+      this.context.lineCap = "round";
+      this.context.lineJoin = "round";
+      this.context.lineWidth = 5;
+      this.context.strokeStyle = "#00ff";
+    },
+    penRed: function() {
+      // カーソル：描画モード(赤色のペン)
+      this.canvasMode = "penRed";
+
+      // 描画スタイルの設定
+      this.context.lineCap = "round";
+      this.context.lineJoin = "round";
+      this.context.lineWidth = 5;
+      this.context.strokeStyle = "#ff0000";
     },
     doEraser: function() {
       this.canvasMode = "doEraser";
