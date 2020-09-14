@@ -30,7 +30,7 @@
 <script>
 // グローバルコンポーネントの設定
 export default {
-  // コンポーネントの指定
+  // コンポーントの指定
   name: "DrawTool",
   // 使用するデータの定義
   data() {
@@ -163,6 +163,6 @@ export default {
 button {
   margin-left: 5px;
 }
-</style>>
+</style>
 
 
