@@ -1,19 +1,20 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
+    <VueSwatche />
     <DrawTool />
   </div>
 </template>
 
 <script>
-// import HelloWorld from "./components/HelloWorld.vue";
 import DrawTool from "./components/DrawTool.vue";
+import VueSwatche from "./components/VueSwatche";
 
 export default {
   name: "App",
   components: {
     // HelloWorld,
-    DrawTool
+    DrawTool,
+    VueSwatche
   }
 };
 </script>

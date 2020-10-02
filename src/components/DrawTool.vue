@@ -1,6 +1,28 @@
 <template>
   <div>
-    <h1>DrawTool</h1>
+    <div id="nav-bar">
+      <!-- 各種ツールをボタンタグで配置 -->
+      <div id="tool-alea" style="inline">
+        <button id="select-pen_black" class="button-style" @click="penBlack">
+          Pen(Black)
+        </button>
+        <button id="select-pen_blue" class="button-style" @click="penBlue">
+          Pen(Blue)
+        </button>
+        <button id="select-pen_red" class="button-style" @click="penRed">
+          Pen(Red)
+        </button>
+        <button id="select-eraser" class="button-style" @click="doEraser">
+          Eraser
+        </button>
+        <button id="all-delete" class="button-style" @click="doDelete">
+          Delete
+        </button>
+        <button id="download" class="button-style" @click="download">
+          Download
+        </button>
+      </div>
+    </div>
     <div id="canvas-area">
       <!-- 9行目＝canvasタグ内にeraserクラスをバインドする処理 -->
       <!-- 10行目〜＝canvas要素に範囲の指定とイベント毎v-onディレクティブの設定 -->
@@ -9,20 +31,11 @@
         v-bind:class="{ doEraser: canvasMode === 'doEraser' }"
         @mousedown="paintStart"
         @mouseout="paintEnd"
-        @mouseup="paintEend"
+        @mouseup="paintEnd"
         @mousemove="draw"
-        height="500px"
-        width="500px"
+        height="1000px"
+        width="1409px"
       ></canvas>
-    </div>
-    <!-- 各種ツールをボタンタグで配置 -->
-    <div id="tool-alea">
-      <button id="select-pen_black" @click="penBlack">Pen(Black)</button>
-      <button id="select-pen_blue" @click="penBlue">Pen(Blue)</button>
-      <button id="select-pen_red" @click="penRed">Pen(Red)</button>
-      <button id="select-eraser" @click="doEraser">Eraser</button>
-      <button id="all-delete" @click="doDelete">Delete</button>
-      <button id="download" @click="download">Download</button>
     </div>
   </div>
 </template>
@@ -76,7 +89,7 @@ export default {
       this.context.stroke();
     },
     //描画開始(mousedown)
-    paintS: function(e) {
+    paintStart: function(e) {
       let x = e.layerX;
       let y = e.layerY;
 
@@ -91,7 +104,7 @@ export default {
       this.isDrag = true;
     },
     // 描画終了
-    paintE: function() {
+    paintEnd: function() {
       this.context.closePath();
       this.isDrag = false;
     },
@@ -150,19 +163,27 @@ export default {
 };
 </script>
 
-
 <style scoped>
+#nav-bar {
+  background-color: #333;
+  height: 60px;
+  width: 100%;
+}
+
 /* canvas要素内の枠組み */
 #draw-area {
-  border: 1px solid #000;
 }
 /* 消しゴム要素の画像指定 */
 .doEraser {
   cursor: url(../assets/image/eraser.png) 50 50, auto;
 }
-button {
-  margin-left: 5px;
+
+.button-style {
+  margin-left: 10px;
+  background-color: #ddd;
+  font-size: 1.4em;
+  font-weight: bold;
+  padding: 10px 30px;
+  display: inline;
 }
-</style>>
-
-
+</style>
