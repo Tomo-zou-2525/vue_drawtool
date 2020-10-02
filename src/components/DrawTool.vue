@@ -7,9 +7,9 @@
       <canvas
         id="draw-area"
         v-bind:class="{ doEraser: canvasMode === 'doEraser' }"
-        @mousedown="paintS"
-        @mouseout="paintE"
-        @mouseup="paintE"
+        @mousedown="paintStart"
+        @mouseout="paintEnd"
+        @mouseup="paintEend"
         @mousemove="draw"
         height="500px"
         width="500px"
