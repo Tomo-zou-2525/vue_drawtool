@@ -2,25 +2,13 @@
   <div>
     <div id="nav-bar">
       <!-- 各種ツールをボタンタグで配置 -->
-      <div id="tool-alea" style="inline">
-        <button id="select-pen_black" class="button-style" @click="penBlack">
-          Pen(Black)
-        </button>
-        <button id="select-pen_blue" class="button-style" @click="penBlue">
-          Pen(Blue)
-        </button>
-        <button id="select-pen_red" class="button-style" @click="penRed">
-          Pen(Red)
-        </button>
-        <button id="select-eraser" class="button-style" @click="doEraser">
-          Eraser
-        </button>
-        <button id="all-delete" class="button-style" @click="doDelete">
-          Delete
-        </button>
-        <button id="download" class="button-style" @click="download">
-          Download
-        </button>
+      <div id="tool-area" style="inline">
+        <button id="select-pen_black" class="button-style" @click="penBlack">Pen(Black)</button>
+        <button id="select-pen_blue" class="button-style" @click="penBlue">Pen(Blue)</button>
+        <button id="select-pen_red" class="button-style" @click="penRed">Pen(Red)</button>
+        <button id="select-eraser" class="button-style" @click="doEraser">Eraser</button>
+        <button id="all-delete" class="button-style" @click="clearCanvas">Delete</button>
+        <button id="download" class="button-style" @click="download">Download</button>
       </div>
     </div>
     <div id="canvas-area">
@@ -28,7 +16,7 @@
       <!-- 10行目〜＝canvas要素に範囲の指定とイベント毎v-onディレクティブの設定 -->
       <canvas
         id="draw-area"
-        v-bind:class="{ doEraser: canvasMode === 'doEraser' }"
+        v-bind:class="{ doEraser: drawtool === 'doEraser' }"
         @mousedown="paintStart"
         @mouseout="paintEnd"
         @mouseup="paintEnd"
@@ -53,8 +41,8 @@ export default {
       context: null,
       // ドラッグ状態かを判定するフラグ
       isDrag: false,
-      // 現在の状態を表すパラメータ・canvasModeを追加
-      canvasMode: "penBlack"
+      // 現在の状態を表すパラメータ・drawtoolを追加
+      drawtool: "penBlack"
     };
   },
   // マウント要素を指定
@@ -108,14 +96,14 @@ export default {
       this.context.closePath();
       this.isDrag = false;
     },
-    doDelete: function() {
+    clearCanvas: function() {
       // cleaRect:四角形の形にクリアにするメソッド
       // cleaRect(x, y, w, h) x,yは座標原点、w,hは四角形の幅
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     },
     penBlack: function() {
-      // カーソル：描画モード(黒色のペン)
-      this.canvasMode = "penBlack";
+      // カーソル：描画モード( 黒色のペン)
+      this.drawtool = "penBlack";
 
       // 描画スタイルの設定
       this.context.lineCap = "round";
@@ -125,7 +113,7 @@ export default {
     },
     penBlue: function() {
       // カーソル：描画モード(青色のペン)
-      this.canvasMode = "penBlack";
+      this.drawtool = "penBlack";
 
       // 描画スタイルの設定
       this.context.lineCap = "round";
@@ -135,7 +123,7 @@ export default {
     },
     penRed: function() {
       // カーソル：描画モード(赤色のペン)
-      this.canvasMode = "penRed";
+      this.drawtool = "penRed";
 
       // 描画スタイルの設定
       this.context.lineCap = "round";
@@ -144,7 +132,7 @@ export default {
       this.context.strokeStyle = "#ff0000";
     },
     doEraser: function() {
-      this.canvasMode = "doEraser";
+      this.drawtool = "doEraser";
 
       // 描画スタイルの設定
       this.context.lineCap = "square";
@@ -170,9 +158,6 @@ export default {
   width: 100%;
 }
 
-/* canvas要素内の枠組み */
-#draw-area {
-}
 /* 消しゴム要素の画像指定 */
 .doEraser {
   cursor: url(../assets/image/eraser.png) 50 50, auto;

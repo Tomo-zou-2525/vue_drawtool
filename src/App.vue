@@ -2,6 +2,7 @@
   <div id="app">
     <VueSwatche />
     <DrawTool />
+    {{ color }}
   </div>
 </template>
 
