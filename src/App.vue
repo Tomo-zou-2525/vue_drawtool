@@ -1,8 +1,7 @@
 <template>
   <div id="app">
-    <VueSwatche />
-    <DrawTool />
-    {{ color }}
+    <p><VueSwatche /></p>
+    <p><DrawTool /></p>
   </div>
 </template>
 
@@ -15,8 +14,8 @@ export default {
   components: {
     // HelloWorld,
     DrawTool,
-    VueSwatche
-  }
+    VueSwatche,
+  },
 };
 </script>
 

@@ -3,15 +3,27 @@
     <div id="nav-bar">
       <!-- 各種ツールをボタンタグで配置 -->
       <div id="tool-area" style="inline">
-        <button id="select-pen_black" class="button-style" @click="penBlack">Pen(Black)</button>
-        <button id="select-pen_blue" class="button-style" @click="penBlue">Pen(Blue)</button>
-        <button id="select-pen_red" class="button-style" @click="penRed">Pen(Red)</button>
-        <button id="select-eraser" class="button-style" @click="doEraser">Eraser</button>
-        <button id="all-delete" class="button-style" @click="clearCanvas">Delete</button>
-        <button id="download" class="button-style" @click="download">Download</button>
+        <button id="select-pen_black" class="button-style" @click="penBlack">
+          Pen(Black)
+        </button>
+        <button id="select-pen_blue" class="button-style" @click="penBlue">
+          Pen(Blue)
+        </button>
+        <button id="select-pen_red" class="button-style" @click="penRed">
+          Pen(Red)
+        </button>
+        <button id="select-eraser" class="button-style" @click="doEraser">
+          Eraser
+        </button>
+        <button id="all-delete" class="button-style" @click="clearCanvas">
+          Delete
+        </button>
+        <button id="download" class="button-style" @click="download">
+          Download
+        </button>
       </div>
     </div>
-    <div id="canvas-area">
+    <div id="canvas-area" class="canvas-map">
       <!-- 9行目＝canvasタグ内にeraserクラスをバインドする処理 -->
       <!-- 10行目〜＝canvas要素に範囲の指定とイベント毎v-onディレクティブの設定 -->
       <canvas
@@ -42,7 +54,7 @@ export default {
       // ドラッグ状態かを判定するフラグ
       isDrag: false,
       // 現在の状態を表すパラメータ・drawtoolを追加
-      drawtool: "penBlack"
+      drawtool: "penBlack",
     };
   },
   // マウント要素を指定
@@ -62,7 +74,7 @@ export default {
   },
   methods: {
     //描画
-    draw: function(e) {
+    draw: function (e) {
       // layerX or layerY （現在の座標を取得）
       let x = e.layerX;
       let y = e.layerY;
@@ -77,7 +89,7 @@ export default {
       this.context.stroke();
     },
     //描画開始(mousedown)
-    paintStart: function(e) {
+    paintStart: function (e) {
       let x = e.layerX;
       let y = e.layerY;
 
@@ -92,18 +104,19 @@ export default {
       this.isDrag = true;
     },
     // 描画終了
-    paintEnd: function() {
+    paintEnd: function () {
       this.context.closePath();
       this.isDrag = false;
     },
-    clearCanvas: function() {
+    clearCanvas: function () {
       // cleaRect:四角形の形にクリアにするメソッド
       // cleaRect(x, y, w, h) x,yは座標原点、w,hは四角形の幅
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     },
-    penBlack: function() {
+    penBlack: function () {
       // カーソル：描画モード( 黒色のペン)
       this.drawtool = "penBlack";
+      console.log(this);
 
       // 描画スタイルの設定
       this.context.lineCap = "round";
@@ -111,7 +124,7 @@ export default {
       this.context.lineWidth = 5;
       this.context.strokeStyle = "#000";
     },
-    penBlue: function() {
+    penBlue: function () {
       // カーソル：描画モード(青色のペン)
       this.drawtool = "penBlack";
 
@@ -121,7 +134,7 @@ export default {
       this.context.lineWidth = 5;
       this.context.strokeStyle = "#00ff";
     },
-    penRed: function() {
+    penRed: function () {
       // カーソル：描画モード(赤色のペン)
       this.drawtool = "penRed";
 
@@ -131,7 +144,7 @@ export default {
       this.context.lineWidth = 5;
       this.context.strokeStyle = "#ff0000";
     },
-    doEraser: function() {
+    doEraser: function () {
       this.drawtool = "doEraser";
 
       // 描画スタイルの設定
@@ -141,13 +154,18 @@ export default {
       this.context.strokeStyle = "#fff";
     },
     // download属性を使用してダウンロードファイルを生成
-    download: function() {
+    download: function () {
       let link = document.createElement("a");
       link.href = this.canvas.toDataURL("image/png");
-      link.download = "canvas-" + new Date().getTime() + ".png";
+      link.download =
+        "お絵かき記録-" +
+        new Intl.DateTimeFormat("ja-JP-u-ca-japanese", { era: "long" }).format(
+          new Date()
+        ) +
+        ".png";
       link.click();
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -156,6 +174,12 @@ export default {
   background-color: #333;
   height: 60px;
   width: 100%;
+}
+.canvas-map {
+  background-image: linear-gradient(0deg, transparent 31px, #333 32px),
+    linear-gradient(90deg, transparent 31px, #333 32px);
+  background-color: #e6e3ad;
+  background-size: 32px 32px;
 }
 
 /* 消しゴム要素の画像指定 */
