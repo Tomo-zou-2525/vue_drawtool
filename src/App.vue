@@ -1,12 +1,23 @@
 <template>
   <div id="app">
+    <p><VueSwatche /></p>
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/">DrawTool</router-link> |
+      <router-link to="/about">Calender</router-link>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
+<script>
+import VueSwatche from "./components/VueSwatche";
+
+export default {
+  name: "App",
+  components: {
+    VueSwatche,
+  },
+};
+</script>
 
 <style>
 #app {
