@@ -2,6 +2,7 @@
 <template>
   <div>
     <v-swatches v-model="color"></v-swatches>
+    {{ color }}
   </div>
 </template>
 
@@ -15,8 +16,8 @@ export default {
   components: { VSwatches },
   data() {
     return {
-      color: "#1CA085"
+      color: "#1CA085",
     };
-  }
+  },
 };
 </script>

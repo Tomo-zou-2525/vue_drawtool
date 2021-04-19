@@ -3,14 +3,10 @@
     <div id="nav-bar">
       <!-- 各種ツールをボタンタグで配置 -->
       <div id="tool-area" style="inline">
-        <button id="select-pen_black" class="button-style" @click="penBlack">
-          Pen(Black)
-        </button>
-        <button id="select-pen_blue" class="button-style" @click="penBlue">
-          Pen(Blue)
-        </button>
-        <button id="select-pen_red" class="button-style" @click="penRed">
-          Pen(Red)
+        <span>{{ drawtool }}</span>
+        <v-swatches v-model="color" />
+        <button id="select-pen_black" class="button-style" @click="drawLine()">
+          Pen
         </button>
         <button id="select-eraser" class="button-style" @click="doEraser">
           Eraser
@@ -41,10 +37,15 @@
 </template>
 
 <script>
+import VSwatches from "vue-swatches";
+import "vue-swatches/dist/vue-swatches.css";
+
 // グローバルコンポーネントの設定
 export default {
   // コンポーネントの指定
-  name: "DrawTool",
+  name: "Home",
+  // コンポーネントの挿入
+  components: { VSwatches },
   // 使用するデータの定義
   data() {
     // 空のcanvas,contextを用意
@@ -55,6 +56,7 @@ export default {
       isDrag: false,
       // 現在の状態を表すパラメータ・drawtoolを追加
       drawtool: "penBlack",
+      color: "#000000",
     };
   },
   // マウント要素を指定
@@ -74,7 +76,7 @@ export default {
   },
   methods: {
     //描画
-    draw: function(e) {
+    draw: function (e) {
       // layerX or layerY （現在の座標を取得）
       let x = e.layerX;
       let y = e.layerY;
@@ -89,7 +91,7 @@ export default {
       this.context.stroke();
     },
     //描画開始(mousedown)
-    paintStart: function(e) {
+    paintStart: function (e) {
       let x = e.layerX;
       let y = e.layerY;
 
@@ -104,47 +106,25 @@ export default {
       this.isDrag = true;
     },
     // 描画終了
-    paintEnd: function() {
+    paintEnd: function () {
       this.context.closePath();
       this.isDrag = false;
     },
-    clearCanvas: function() {
+    clearCanvas: function () {
       // cleaRect:四角形の形にクリアにするメソッド
       // cleaRect(x, y, w, h) x,yは座標原点、w,hは四角形の幅
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     },
-    penBlack: function() {
-      // カーソル：描画モード( 黒色のペン)
-      this.drawtool = "penBlack";
-      console.log(this);
+    drawLine: function () {
+      this.drawtool = "ペン";
 
       // 描画スタイルの設定
       this.context.lineCap = "round";
       this.context.lineJoin = "round";
       this.context.lineWidth = 5;
-      this.context.strokeStyle = "#000";
+      this.context.strokeStyle = this.color;
     },
-    penBlue: function() {
-      // カーソル：描画モード(青色のペン)
-      this.drawtool = "penBlack";
-
-      // 描画スタイルの設定
-      this.context.lineCap = "round";
-      this.context.lineJoin = "round";
-      this.context.lineWidth = 5;
-      this.context.strokeStyle = "#00ff";
-    },
-    penRed: function() {
-      // カーソル：描画モード(赤色のペン)
-      this.drawtool = "penRed";
-
-      // 描画スタイルの設定
-      this.context.lineCap = "round";
-      this.context.lineJoin = "round";
-      this.context.lineWidth = 5;
-      this.context.strokeStyle = "#ff0000";
-    },
-    doEraser: function() {
+    doEraser: function () {
       this.drawtool = "doEraser";
 
       // 描画スタイルの設定
@@ -154,7 +134,7 @@ export default {
       this.context.strokeStyle = "#fff";
     },
     // download属性を使用してダウンロードファイルを生成
-    download: function() {
+    download: function () {
       let link = document.createElement("a");
       link.href = this.canvas.toDataURL("image/png");
       link.download =
