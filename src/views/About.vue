@@ -1,12 +1,5 @@
 <template>
   <div>
-    <!-- モーダル -->
-    <div id="overlay" v-if="isModel">
-      <div id="content">
-        <p>これがモーダルウィンドウです。</p>
-        <p><button>close</button></p>
-      </div>
-    </div>
     <!-- カレンダーヘッダ -->
     <div id="cal-header">
       <span class="header-arrow" v-on:click="setLastMonth">＜</span>
@@ -66,7 +59,7 @@ export default {
     /**
      * カレンダー日付クリック時の処理
      */
-    dateClick: function (dayNum) {
+    dateClick: function(dayNum) {
       if (dayNum !== "") {
         this.day = dayNum;
       }
@@ -76,7 +69,7 @@ export default {
      * 年、月は現在選択しているページ
      * 日は引数
      */
-    isToday: function (day) {
+    isToday: function(day) {
       var date = this.year + "-" + ("0" + this.month).slice(-2) + "-" + day;
       if (this.today === date) {
         return true;
@@ -86,7 +79,7 @@ export default {
     /**
      * 先月のカレンダーを取得
      */
-    setLastMonth: function () {
+    setLastMonth: function() {
       if (this.month === 1) {
         this.year--;
         this.month = 12;
@@ -98,7 +91,7 @@ export default {
     /**
      * 翌月のカレンダーを取得
      */
-    setNextMonth: function () {
+    setNextMonth: function() {
       if (this.month === 12) {
         this.year++;
         this.month = 1;
@@ -109,7 +102,7 @@ export default {
     },
   },
   computed: {
-    calData: function () {
+    calData: function() {
       console.log(this.year + "-" + this.month + "のデータ作成");
       var calData = [];
       // 初日の曜日を取得

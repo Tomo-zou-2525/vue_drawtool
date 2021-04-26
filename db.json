@@ -1,0 +1,36 @@
+{
+  "contents": [
+    {
+      "id": 1,
+      "title": "title - foo",
+      "body": "body - bar"
+    },
+    {
+      "id": 2,
+      "title": "title - foo2",
+      "body": "body - bar2"
+    },
+    {
+      "id": 3,
+      "title": "title - foo3",
+      "body": "body - bar3"
+    }
+  ],
+  "posts": [
+    {
+      "title": "ご確認のほど",
+      "body": "宜しくお願い致します",
+      "id": 1
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
