@@ -94,7 +94,7 @@ export default {
 
 <style>
 .form-contents {
-  width: 400px;
+  width: 28.6remx;
   margin: 0 auto;
 }
 
@@ -104,9 +104,9 @@ export default {
 
 .thead-dark {
   background-color: #333;
-  height: 60px;
+  height: 4.3rem;
   width: 100%;
   color: #fff;
-  font-size: 20px;
+  font-size: 1.42rem;
 }
 </style>
