@@ -11,7 +11,6 @@
 <script>
 export default {
   name: "App",
-  components: {},
 };
 </script>
 
@@ -25,7 +24,7 @@ export default {
 }
 
 #nav {
-  padding: 30px;
+  padding: 2.14rem;
 }
 
 #nav a {

@@ -1,205 +1,163 @@
 <template>
   <div>
-    <!-- カレンダーヘッダ -->
-    <div id="cal-header">
-      <span class="header-arrow" v-on:click="setLastMonth">＜</span>
-      <span class="selected-month">{{ year }}年{{ month }}月</span>
-      <span class="header-arrow" v-on:click="setNextMonth">＞</span>
-    </div>
+    <div class="contents">
+      <div id="calendar-header" class="button-area">
+        <span @click="setLastMonth" class="">＜</span>
+        <span>{{ displayDate }}</span>
+        <span @click="setNextMonth" class="">＞</span>
+      </div>
 
-    <!-- カレンダーメイン -->
-    <table id="cal-main">
-      <!-- 曜日を表示させる（テーブルヘッダ） -->
-      <thead>
-        <th v-for="(dayname, index) in weekdays" :key="index">{{ dayname }}</th>
-      </thead>
-      <!-- 日付を表示させる（テーブルボディ） -->
-      <tbody>
-        <tr v-for="(weekData, index) in calData" :key="index">
-          <td
-            class="cal-day"
-            v-for="(dayNum, index) in weekData"
-            :key="index"
-            v-on:click="dateClick(dayNum)"
-            :class="{ 'cal-today': isToday(dayNum), active: day === dayNum }"
+      <div class="calendar">
+        <div class="calendar-weekly">
+          <div class="calendar-weekday" v-for="n in 7" :key="n">
+            {{ weekDay(n - 1) }}
+          </div>
+        </div>
+        <div
+          class="calendar-weekly"
+          v-for="(week, outsidepass) in calendars"
+          :key="outsidepass"
+        >
+          <div
+            class="calendar-daily"
+            :class="{ outside: currentMonth !== day.month }"
+            v-for="(day, insidepass) in week"
+            :key="insidepass"
+            @click="dateClick(xxx)"
           >
-            <span v-if="isToday(dayNum)">今日</span>
-            <span v-else>{{ dayNum }}</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <div class="calendar-day">
+              {{ day.day }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+
 <script>
+import moment from "moment";
 export default {
   data() {
     return {
-      weekdays: ["日", "月", "火", "水", "木", "金", "土"],
-      year: 2020,
-      month: 3,
-      day: -1,
-      today: "",
-      isModel: false,
+      currentDate: moment(),
     };
   },
-  mounted() {
-    var date = new Date();
-    var y = date.getFullYear();
-    var m = ("0" + (date.getMonth() + 1)).slice(-2);
-    var d = ("0" + date.getDate()).slice(-2);
-
-    // yearとmonthを設定
-    this.year = y;
-    this.month = Number(m);
-    // 今日の日付を設定
-    this.today = y + "-" + m + "-" + d;
-  },
   methods: {
-    /**
-     * カレンダー日付クリック時の処理
-     */
-    dateClick: function(dayNum) {
-      if (dayNum !== "") {
-        this.day = dayNum;
-      }
+    getStartDate() {
+      let date = moment(this.currentDate);
+      date.startOf("month");
+      const dayOfWeekNum = date.day();
+      return date.subtract(dayOfWeekNum, "days");
     },
-    /**
-     * 今日かどうかの判定
-     * 年、月は現在選択しているページ
-     * 日は引数
-     */
-    isToday: function(day) {
-      var date = this.year + "-" + ("0" + this.month).slice(-2) + "-" + day;
-      if (this.today === date) {
-        return true;
-      }
-      return false;
+    getEndDate() {
+      let date = moment(this.currentDate);
+      date.endOf("month");
+      const dayOfWeekNum = date.day();
+      return date.subtract(dayOfWeekNum, "days");
     },
-    /**
-     * 先月のカレンダーを取得
-     */
-    setLastMonth: function() {
-      if (this.month === 1) {
-        this.year--;
-        this.month = 12;
-      } else {
-        this.month--;
+    getCalendar() {
+      const startDate = this.getStartDate();
+      const endDate = this.getEndDate();
+      const weekNumber = Math.ceil(endDate.diff(startDate, "days") / 7);
+
+      let calendars = [];
+      const calendarDate = this.getStartDate();
+      for (let week = 0; week < weekNumber; week++) {
+        let weekRow = [];
+        for (let day = 0; day < 7; day++) {
+          weekRow.push({
+            day: calendarDate.get("date"),
+            month: calendarDate.format("YYYY-MM"),
+          });
+          calendarDate.add(1, "days");
+        }
+        calendars.push(weekRow);
       }
-      this.day = -1;
+      return calendars;
     },
-    /**
-     * 翌月のカレンダーを取得
-     */
-    setNextMonth: function() {
-      if (this.month === 12) {
-        this.year++;
-        this.month = 1;
-      } else {
-        this.month++;
-      }
-      this.day = -1;
+    setNextMonth() {
+      this.currentDate = moment(this.currentDate).add(1, "month");
+    },
+    setLastMonth() {
+      this.currentDate = moment(this.currentDate).subtract(1, "month");
+    },
+    weekDay(dayIndex) {
+      const week = ["日", "月", "火", "水", "木", "金", "土"];
+      return week[dayIndex];
     },
   },
   computed: {
-    calData: function() {
-      console.log(this.year + "-" + this.month + "のデータ作成");
-      var calData = [];
-      // 初日の曜日を取得
-      var firstWeekDay = new Date(this.year, this.month - 1, 1).getDay();
-      // 月の日数
-      var lastDay = new Date(this.year, this.month, 0).getDate();
-      // 日数カウント用
-      var dayNum = 1;
-      // 週ごとのデータを作成して、calDateにpush
-      while (dayNum <= lastDay) {
-        var weekData = [];
-
-        // 日曜～土曜の日付データを配列で作成
-        for (var i = 0; i <= 6; i++) {
-          if (calData.length === 0 && i < firstWeekDay) {
-            // 初週の1日以前の曜日は空文字
-            weekData[i] = "";
-          } else if (lastDay < dayNum) {
-            // 最終日以降の曜日は空文字
-            weekData[i] = "";
-          } else {
-            // 通常の日付入力
-            weekData[i] = dayNum;
-            dayNum++;
-          }
-        }
-        calData.push(weekData);
-      }
-      return calData;
+    calendars() {
+      return this.getCalendar();
+    },
+    displayDate() {
+      return this.currentDate.format("YYYY[年]M[月]");
+    },
+    //背景色を分けるために使用するデータを定義：currentMonth
+    currentMonth() {
+      //formatしておく
+      return this.currentDate.format("YYYY-MM");
     },
   },
 };
 </script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-/*---------------------------------------
-モーダルのcss
----------------------------------------*/
-#overlay {
-  /*要素を重ねた時の順番*/
-  z-index: 1;
-
-  /*画面全体を覆う設定*/
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-
-  /*画面の中央に要素を表示させる設定*/
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.contents {
+  margin: 2em auto;
+  width: 100％;
 }
-/*---------------------------------------
-ヘッダのcss
----------------------------------------*/
-#cal-header {
-  font-size: 24px;
+#calendar-header {
+  font-size: 1.7rem;
   padding: 0;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 0.8rem;
   background-color: darkorange;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 0.08rem solid #ddd;
   display: flex;
   justify-content: space-between;
 }
-#cal-header span {
-  padding: 15px 20px;
+#calendar-header span {
+  padding: 1.07rem 1.42rem;
   color: white;
   display: inline-block;
 }
-/*---------------------------------------
-カレンダーのcss
----------------------------------------*/
-#cal-main {
-  font-size: 14px;
-  line-height: 20px;
-  table-layout: fixed;
-  width: 100%;
-  margin-bottom: 1rem;
-  color: #212529;
-  border-bottom: 1px solid #ddd;
-  border-collapse: collapse;
+.button-area {
+  margin: 0.5em 0;
 }
-#cal-main th {
-  padding: 0;
-  text-align: center;
-  vertical-align: middle;
-  font-weight: normal;
-  color: #999;
+.button {
+  padding: 0.3rem 0.57rem;
+  margin-right: 0.57rem;
 }
-#cal-main td {
-  padding: 8px;
+.calendar {
+  border-top: 0.07rem solid #e0e0e0;
+  font-size: 0.8em;
+}
+.calendar-weekly {
+  display: flex;
+  border-left: 0.07rem solid #e0e0e0;
+}
+.calendar-weekday {
+  flex: 1;
+  border-bottom: 0.07rem solid #e0e0e0;
+  border-right: 0.07rem solid #e0e0e0;
+  margin-right: -0.07rem;
   text-align: center;
-  vertical-align: middle;
-  border-top: 1px solid #ddd;
+}
+.calendar-daily {
+  flex: 1;
+  min-height: 8.92rem;
+  border-right: 0.07rem solid #e0e0e0;
+  border-bottom: 0.07rem solid #e0e0e0;
+  margin-right: -0.07rem;
+}
+.calendar-day {
+  text-align: center;
+}
+.outside {
+  background-color: #f7f7f733;
 }
 .cal-today {
   background-color: #fcf8e3;
