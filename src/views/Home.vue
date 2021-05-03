@@ -65,12 +65,10 @@ export default {
     const COLOR_BLACK = "#000";
 
     //描画状態のパラメータを定数化
-    const DRAW_MODE_PEN = "drawing";
-    console.log(DRAW_MODE_PEN);
+    const DRAW_MODE_PEN = "drawing"; // eslint-disable-line
 
     //描画状態のパラメータを定数化
-    const DRAW_MODE_ERASER = "doEraser";
-    console.log(DRAW_MODE_ERASER);
+    const DRAW_MODE_ERASER = "doEraser"; // eslint-disable-line
 
     // canvas要素の取得（マウント）
     this.canvas = document.querySelector("#draw-area");
@@ -87,7 +85,7 @@ export default {
   },
   methods: {
     //描画
-    draw: function(e) {
+    draw: function (e) {
       // layerX or layerY （現在の座標を取得）
       let x = e.layerX;
       let y = e.layerY;
@@ -102,7 +100,7 @@ export default {
       this.context.stroke();
     },
     //描画開始(mousedown)
-    paintStart: function(e) {
+    paintStart: function (e) {
       let x = e.layerX;
       let y = e.layerY;
 
@@ -117,16 +115,16 @@ export default {
       this.isDrag = true;
     },
     // 描画終了
-    paintEnd: function() {
+    paintEnd: function () {
       this.context.closePath();
       this.isDrag = false;
     },
-    clearCanvas: function() {
+    clearCanvas: function () {
       // cleaRect:四角形の形にクリアにするメソッド
       // cleaRect(x, y, w, h) x,yは座標原点、w,hは四角形の幅
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     },
-    drawLine: function() {
+    drawLine: function () {
       this.drawtool = this.DRAW_MODE_PEN;
 
       // 描画スタイルの設定
@@ -135,7 +133,7 @@ export default {
       this.context.lineWidth = 5;
       this.context.strokeStyle = this.color;
     },
-    doEraser: function() {
+    doEraser: function () {
       this.drawtool = this.DRAW_MODE_ERASER;
 
       // 描画スタイルの設定
@@ -145,7 +143,7 @@ export default {
       this.context.strokeStyle = "#fff";
     },
     // download属性を使用してダウンロードファイルを生成
-    download: function() {
+    download: function () {
       let link = document.createElement("a");
       link.href = this.canvas.toDataURL("image/png");
       link.download =
