@@ -1,20 +1,16 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <DrawTool />
+    <div id="nav">
+      <router-link to="/">DrawTool</router-link> |
+      <router-link to="/about">Calender</router-link> |
+      <router-link to="/api-test">Api-Test</router-link>
+    </div>
+    <router-view />
   </div>
 </template>
-
 <script>
-// import HelloWorld from "./components/HelloWorld.vue";
-import DrawTool from "./components/DrawTool.vue";
-
 export default {
   name: "App",
-  components: {
-    // HelloWorld,
-    DrawTool
-  }
 };
 </script>
 
@@ -25,6 +21,18 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+#nav {
+  padding: 2.14rem;
+}
+
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>
